@@ -85,7 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
           "transition",
           "transform",
           "hover:scale-105",
-          "hover:shadow-2xl"
+          "hover:shadow-2xl",
+          "m-[10px]"
         );
 
         const movieImage = document.createElement("img");
