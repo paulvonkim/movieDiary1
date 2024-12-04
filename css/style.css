@@ -1,16 +1,13 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+@keyframes flash {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
-body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 15px;
-  line-height: 1.5;
-}
-.container {
-  width: 80%;
-  max-width: 1100px;
-  margin: auto;
-  color: rgb(63, 58, 58);
+
+.flash-effect {
+  animation: flash 2s infinite;
 }
