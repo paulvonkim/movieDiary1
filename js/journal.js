@@ -37,9 +37,10 @@
 document.addEventListener("DOMContentLoaded", () => {
   const favoritesList = document.getElementById("favorites-list");
 
-  // Fetch favorites from localStorage
+  // creating a function that updates the list of known favorites in local storage
   function getFavorites() {
     return JSON.parse(localStorage.getItem("favorites")) || [];
+    //legt einen benannten Eintrag an oder ersetzt
   }
 
   // Create a movie card
@@ -65,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const movieTitle = document.createElement("h3");
     movieTitle.textContent = movie.title;
-    movieTitle.classList.add("text-lg", "font-semibold", "mb-2");
+    movieTitle.classList.add("text-lg", "font-semibold", "mb-2", "text-white");
     movieInfo.appendChild(movieTitle);
 
     const movieRating = document.createElement("p");
