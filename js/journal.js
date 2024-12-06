@@ -20,7 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
       "relative",
       "flex",
       "flex-col",
-      "h-full"
+      "h-full",
+      "m-[20px]",
+      "mb-[20px]"
     );
     card.setAttribute("data-movie-id", movie.id);
 
@@ -106,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Remove from favorites
       favorites = favorites.filter((fav) => fav.id !== movie.id);
       favBtn.classList.remove("text-red-500"); // Update the heart color
+      removeMovieCard(movie.id);
     } else {
       // Add to favorites
       favorites.push(movie);
@@ -141,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     notePopup.innerHTML = `
           <div class="bg-gray-900 p-6 rounded-lg w-96">
-              <h3 class="text-xl font-semibold mb-4">Movie Note</h3>
+              <h3 class="text-white text-xl font-semibold mb-4">Movie Note</h3>
               <textarea id="note-text" class="w-full h-32 p-2 bg-gray-700 text-white rounded-lg" placeholder="Write a note...">${
                 existingNote || ""
               }</textarea>
@@ -183,3 +186,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const favorites = getFavorites(); // Aufrufen einer Funktion
   favorites.forEach((movie) => createMovieCard(movie));
 });
+
+//remove movie from the favorites
+function removeMovieCard(movieId) {
+  const card = document.querySelector(`[data-movie-id="${movieId}"]`);
+  if (card) {
+    card.remove();
+  }
+}
