@@ -179,7 +179,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // -------------------------------------------------
 // To the Top
 $(document).ready(function () {
-  // Create the Back-to-Top button and its styles dynamically
   var back_to_top_button = [
     '<a href="#top" class="back-to-top" style="',
     "position: fixed; ",
@@ -197,10 +196,8 @@ $(document).ready(function () {
     '">⇧</a>',
   ].join("");
 
-  // Append the button to the body
   $("body").append(back_to_top_button);
 
-  // Handle the scroll event to toggle visibility
   $(window).scroll(function () {
     if ($(this).scrollTop() > 100) {
       $(".back-to-top").fadeIn().addClass("flash-effect");
@@ -209,7 +206,7 @@ $(document).ready(function () {
     }
   });
 
-  // Smooth scroll to the top when the button is clicked
+  // Smooth scroll
   $(".back-to-top").click(function () {
     $("body,html").animate(
       {
@@ -219,4 +216,50 @@ $(document).ready(function () {
     );
     return false;
   });
+});
+// ----------------------------------------
+// search
+document.querySelector("form").addEventListener("submit", function (event) {
+  event.preventDefault();
+  const query = document.querySelector("#default-search").value.trim();
+
+  if (!query) {
+    alert("Please enter a search term!");
+    return;
+  }
+
+  const movieGrid = document.getElementById("movie-grid");
+  movieGrid.innerHTML = "";
+
+  fetch(
+    `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(
+      query
+    )}&language=en-US&page=1`,
+    options
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.results.length === 0) {
+        movieGrid.innerHTML = "<p>No results found!</p>";
+        return;
+      }
+
+      data.results.forEach((movie) => {
+        const movieElement = document.createElement("div");
+        movieElement.className =
+          "bg-white rounded-lg shadow-lg overflow-hidden relative flex flex-col transition transform hover:scale-105 hover:shadow-2xl m-[20px] mb-[20px]";
+        movieElement.innerHTML = `
+          <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" class="w-full h-64 object-cover" alt="${movie.title}">
+          <div class="p-4 flex-grow flex flex-col justify-between">
+            <h3 class="text-lg font-semibold mb-2 text-gray-800">${movie.title}</h3>
+            <p class="text-gray-600 mb-2">Rating: ${movie.vote_average}</p>
+          </div>
+        `;
+        movieGrid.appendChild(movieElement);
+      });
+    })
+    .catch((error) => {
+      console.error("Error fetching search results:", error);
+      movieGrid.innerHTML = "<p>An error occurred. Please try again.</p>";
+    });
 });
