@@ -52,9 +52,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const movies = data.results;
       // Fetch the top 5 movies for the carousel
       carouselMovies = movies.slice(0, 5);
-      carouselMovies.forEach((movie) => {
+      carouselMovies.forEach((movie, index) => {
         const carouselElement = document.createElement("div");
-        carouselElement.classList.add("hidden", "duration-700", "ease-in-out");
+        index === 0
+          ? carouselElement.classList.add("duration-700", "ease-in-out")
+          : carouselElement.classList.add("hidden");
         carouselElement.setAttribute("data-carousel-item", "");
         const carouselImage = document.createElement("img");
         carouselImage.src = `https://image.tmdb.org/t/p/original${movie.backdrop_path}`;
