@@ -1,45 +1,11 @@
-// // creating a function that updates the list of known favorites in local storage
-// function updateFavorites(favorites) {
-//   localStorage.setItem("favorites", JSON.stringify(favorites));
-
-//   //legt einen benannten Eintrag an oder ersetzt
-// }
-
-// function getFavorites() {
-//   return JSON.parse(localStorage.getItem("favorites")); //retrieve entry name favorites from local storage localStorage.getItem(favorites);
-// }
-
-// function getFavoriteById(favorites, id) {
-//   return favorites.find((movie) => movie !== null && movie.id === id); //find looks for first entry in an array of favorites that corresponds to a certain criteria
-// }
-
-// function removeFavoriteById(id) {
-//   //look at entries of favorites and search the first entry that corresponds my criteria and return index or posision in an array
-//   //criteria is movie.id === id
-//   const favorites = getFavorites(); // Aufrufen einer Funktion
-//   const index = favorites.findIndex(
-//     (movie) => movie !== null && movie.id === id
-//   );
-//   favorites.splice(index, 1);
-//   updateFavorites(favorites);
-// }
-
-// //function to handle movie note updates
-// function updateMovieNoteById(id, notetext) {
-//   const favorites = getFavorites(); // Aufrufen einer Funktion
-//   const movie = getFavoriteById(favorites, id); //first parameter in the object favorites, retrieve object named in movieID from favorites
-//   movie.notetext = notetext; //set a property named notetext
-//   updateFavorites(favorites); //call function updateFavorites with value named favorites
-// }
-
-//
+//added DOM
 
 document.addEventListener("DOMContentLoaded", () => {
   const favoritesList = document.getElementById("favorites-list");
 
   // creating a function that updates the list of known favorites in local storage
   function getFavorites() {
-    return JSON.parse(localStorage.getItem("favorites")) || [];
+    return JSON.parse(localStorage.getItem("favorites")) || []; //added a code
     //legt einen benannten Eintrag an oder ersetzt
   }
 
@@ -51,7 +17,10 @@ document.addEventListener("DOMContentLoaded", () => {
       "rounded-lg",
       "shadow-lg",
       "overflow-hidden",
-      "relative"
+      "relative",
+      "flex",
+      "flex-col",
+      "h-full"
     );
     card.setAttribute("data-movie-id", movie.id);
 
@@ -62,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     card.appendChild(movieImage);
 
     const movieInfo = document.createElement("div");
-    movieInfo.classList.add("p-4");
+    movieInfo.classList.add("p-4", "flex", "flex-col", "flex-grow");
 
     const movieTitle = document.createElement("h3");
     movieTitle.textContent = movie.title;
@@ -98,13 +67,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add note button
     const noteBtn = document.createElement("button");
     noteBtn.classList.add(
-      "mt-4",
+      "mt-auto",
       "bg-teal-500",
       "text-white",
       "px-4",
       "py-2",
       "rounded-md",
-      "transition"
+      "transition",
+      "self-start"
     );
     const note = getNoteForMovie(movie.id);
     noteBtn.textContent = note ? "View Note" : "Create Note";
@@ -117,6 +87,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     favoritesList.appendChild(card);
   }
+  //note button color changes
+
+  const CREATE_NOTE_COLOR = "bg-teal-500";
+  const VIEW_NOTE_COLOR = "bg-blue-500";
 
   // Check if a movie is in favorites
   function isFavorite(movieId) {
@@ -206,6 +180,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Load favorites from localStorage
-  const favorites = getFavorites();
+  const favorites = getFavorites(); // Aufrufen einer Funktion
   favorites.forEach((movie) => createMovieCard(movie));
 });
