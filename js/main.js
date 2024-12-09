@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
       movies.forEach((movie) => {
         const movieElement = document.createElement("div");
         movieElement.classList.add(
-          "bg-white",
+          "bg-[#22252E]",
           "rounded-lg",
           "shadow-lg",
           "overflow-hidden",
@@ -110,13 +110,13 @@ document.addEventListener("DOMContentLoaded", () => {
           "text-lg",
           "font-semibold",
           "mb-2",
-          "text-gray-800"
+          "text-white"
         );
         movieInfo.appendChild(movieTitle);
 
         const movieRating = document.createElement("p");
         movieRating.textContent = `Rating: ${movie.vote_average}`;
-        movieRating.classList.add("text-gray-600", "mb-2");
+        movieRating.classList.add("text-white", "mb-2");
         movieInfo.appendChild(movieRating);
 
         // Fetch movie details to get runtime
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .then((details) => {
             const movieLength = document.createElement("p");
             movieLength.textContent = `Length: ${details.runtime} mins`;
-            movieLength.classList.add("text-gray-600", "mb-2");
+            movieLength.classList.add("text-white", "mb-2");
             movieInfo.appendChild(movieLength);
           });
 
@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const favBtn = document.createElement("button");
         favBtn.innerHTML = '<i class="fas fa-heart"></i>';
-        favBtn.classList.add("text-black", "hover:text-red-500", "transition");
+        favBtn.classList.add("text-white", "hover:text-red-500", "transition");
 
         // Adding Movies to Favorites
         // Check if the movie is already in favorites
@@ -156,12 +156,12 @@ document.addEventListener("DOMContentLoaded", () => {
             const newFavorites = favorites.filter((fav) => fav.id !== movie.id);
             localStorage.setItem("favorites", JSON.stringify(newFavorites));
             favBtn.classList.remove("text-red-500");
-            favBtn.classList.add("text-black");
+            favBtn.classList.add("text-white");
           } else {
             // Add to favorites
             favorites.push(movie);
             localStorage.setItem("favorites", JSON.stringify(favorites));
-            favBtn.classList.remove("text-black");
+            favBtn.classList.remove("text-white");
             favBtn.classList.add("text-red-500");
           }
         });
