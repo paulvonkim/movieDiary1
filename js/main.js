@@ -221,18 +221,16 @@ $(document).ready(function () {
 });
 // ----------------------------------------
 // search
+// Event listener for the search form
 document.querySelector("form").addEventListener("submit", function (event) {
   event.preventDefault();
   const query = document.querySelector("#default-search").value.trim();
-
   if (!query) {
     alert("Please enter a search term!");
     return;
   }
-
   const movieGrid = document.getElementById("movie-grid");
-  movieGrid.innerHTML = "";
-
+  movieGrid.innerHTML = ""; // Clear previous results
   fetch(
     `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(
       query
@@ -241,22 +239,60 @@ document.querySelector("form").addEventListener("submit", function (event) {
   )
     .then((response) => response.json())
     .then((data) => {
-      if (data.results.length === 0) {
+      if (!data.results || data.results.length === 0) {
         movieGrid.innerHTML = "<p>No results found!</p>";
         return;
       }
-
+      const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
       data.results.forEach((movie) => {
         const movieElement = document.createElement("div");
         movieElement.className =
           "bg-white rounded-lg shadow-lg overflow-hidden relative flex flex-col transition transform hover:scale-105 hover:shadow-2xl m-[20px] mb-[20px]";
-        movieElement.innerHTML = `
-          <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" class="w-full h-64 object-cover" alt="${movie.title}">
-          <div class="p-4 flex-grow flex flex-col justify-between">
-            <h3 class="text-lg font-semibold mb-2 text-gray-800">${movie.title}</h3>
-            <p class="text-gray-600 mb-2">Rating: ${movie.vote_average}</p>
-          </div>
-        `;
+        const movieImage = document.createElement("img");
+        movieImage.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+        movieImage.alt = movie.title;
+        movieImage.className = "w-full h-64 object-cover";
+        movieElement.appendChild(movieImage);
+        const movieInfo = document.createElement("div");
+        movieInfo.className = "p-4 flex-grow flex flex-col justify-between";
+        const movieTitle = document.createElement("h3");
+        movieTitle.textContent = movie.title;
+        movieTitle.className = "text-lg font-semibold mb-2 text-gray-800";
+        movieInfo.appendChild(movieTitle);
+        const movieRating = document.createElement("p");
+        movieRating.textContent = `Rating: ${movie.vote_average}`;
+        movieRating.className = "text-gray-600 mb-2";
+        movieInfo.appendChild(movieRating);
+        movieElement.appendChild(movieInfo);
+        const favBtnContainer = document.createElement("div");
+        favBtnContainer.className = "absolute bottom-3 right-2";
+        const favBtn = document.createElement("button");
+        favBtn.innerHTML = '<i class="fas fa-heart"></i>';
+        favBtn.className = "text-black hover:text-red-500 transition";
+        if (favorites.some((fav) => fav.id === movie.id)) {
+          favBtn.classList.add("text-red-500");
+        }
+        favBtn.addEventListener("click", () => {
+          const currentFavorites =
+            JSON.parse(localStorage.getItem("favorites")) || [];
+          if (favBtn.classList.contains("text-red-500")) {
+            // Remove from favorites
+            const updatedFavorites = currentFavorites.filter(
+              (fav) => fav.id !== movie.id
+            );
+            localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+            favBtn.classList.remove("text-red-500");
+            favBtn.classList.add("text-black");
+          } else {
+            // Add to favorites
+            currentFavorites.push(movie);
+            localStorage.setItem("favorites", JSON.stringify(currentFavorites));
+            favBtn.classList.remove("text-black");
+            favBtn.classList.add("text-red-500");
+          }
+        });
+        favBtnContainer.appendChild(favBtn);
+        movieElement.appendChild(favBtnContainer);
         movieGrid.appendChild(movieElement);
       });
     })
