@@ -1,7 +1,6 @@
 import { fetchMovies } from "./api.js";
 
 export const setupSearch = (form, input, movieGrid) => {
-  // Function to handle favorites
   const getFavorites = () =>
     JSON.parse(localStorage.getItem("favorites")) || [];
   const isFavorite = (movieId) =>
@@ -10,18 +9,15 @@ export const setupSearch = (form, input, movieGrid) => {
     let favorites = getFavorites();
 
     if (isFavorite(movie.id)) {
-      // Remove from favorites
       favorites = favorites.filter((fav) => fav.id !== movie.id);
-      favBtn.classList.remove("text-red-500"); // Update the heart color
+      favBtn.classList.remove("text-red-500");
       favBtn.classList.add("text-gray-400");
     } else {
-      // Add to favorites
       favorites.push(movie);
-      favBtn.classList.add("text-red-500"); // Update the heart color
+      favBtn.classList.add("text-red-500");
       favBtn.classList.remove("text-gray-400");
     }
 
-    // Update localStorage
     localStorage.setItem("favorites", JSON.stringify(favorites));
   };
 
@@ -55,7 +51,6 @@ export const setupSearch = (form, input, movieGrid) => {
         movieElement.className =
           "bg-gray-800 rounded-lg shadow-lg overflow-hidden flex flex-col items-center m-4 relative";
 
-        // Add the movie poster and details
         movieElement.innerHTML = `
           <img src="${poster}" alt="${movie.title}" class="w-full h-64 object-cover" />
           <div class="p-4">
@@ -64,18 +59,15 @@ export const setupSearch = (form, input, movieGrid) => {
           </div>
         `;
 
-        // Create a small favorite heart button
         const favBtn = document.createElement("button");
         favBtn.className =
           "absolute bottom-2 right-2 text-gray-400 hover:text-red-500 transition text-xl";
-        favBtn.innerHTML = `<i class="fas fa-heart"></i>`; // Small heart icon
+        favBtn.innerHTML = `<i class="fas fa-heart"></i>`;
 
-        // Check if already a favorite
         if (isFavorite(movie.id)) {
           favBtn.classList.add("text-red-500");
         }
 
-        // Add click event to toggle favorite
         favBtn.addEventListener("click", () => toggleFavorite(movie, favBtn));
         movieElement.appendChild(favBtn);
 

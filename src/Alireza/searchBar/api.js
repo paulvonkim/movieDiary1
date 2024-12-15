@@ -4,7 +4,7 @@ export const fetchMovies = async (query) => {
   )}&language=en-US&page=1`;
 
   const options = {
-    method: "GET", // Use GET for this endpoint
+    method: "GET",
     headers: {
       accept: "application/json",
       Authorization:
